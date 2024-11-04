@@ -1,0 +1,16 @@
+artifact_uri: mlflow-artifacts:/0/62b9b714eb1945f3a76b0e7aa4959125/artifacts
+deleted_time: 1730712934522
+end_time: 1730708650688
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: deleted
+run_id: 62b9b714eb1945f3a76b0e7aa4959125
+run_name: trusting-perch-185
+run_uuid: 62b9b714eb1945f3a76b0e7aa4959125
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1730708639419
+status: 3
+tags: []
+user_id: Administrateur

@@ -1,0 +1,16 @@
+artifact_uri: mlflow-artifacts:/0/478267bc367c402f9a27b13466db282a/artifacts
+deleted_time: 1730712934532
+end_time: 1730707606698
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: deleted
+run_id: 478267bc367c402f9a27b13466db282a
+run_name: flawless-donkey-282
+run_uuid: 478267bc367c402f9a27b13466db282a
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1730707577672
+status: 3
+tags: []
+user_id: Administrateur

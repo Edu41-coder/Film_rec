@@ -1,0 +1,50 @@
+F:\Film_recom
+API
+   api.py
+   api2.py
+   apy3.py
+Datasets
+   genome-scores.csv
+   genome-tags.csv
+   links.csv
+   merged_movie_data.csv
+   movies.csv
+   ratings.csv
+   tags.csv
+Models
+   train_model.py
+Notebooks
+   general_pipeline.ipynb
+   genome-scores.ipynb
+   genome-tags.ipynb
+   links.ipynb
+   merged_movie_data.ipynb
+   movies.ipynb
+   ratings.ipynb
+   tags.ipynb
+Pipelines
+   general_pipeline.py
+   genome-scores_pipeline.py
+   genome_tags_pipeline.py
+   links_pipeline.py
+   merged_movie_data_pipeline.py
+   movie_data_pipeline.py
+   ratings_pipeline.py
+   tags_pipeline.py
+Tests
+   test_general_pipeline.py
+   test_genome_tags.ipynb
+   test_genome_tags_pipeline.py
+__pycache__
+   api.cpython-312.pyc
+   general_pipeline.cpython-312.pyc
+   genome_tags_pipeline.cpython-311.pyc
+   genome_tags_pipeline.cpython-312.pyc
+   merged_movie_data_pipeline.cpython-311.pyc
+   movie_data_pipeline.cpython-311.pyc
+   ratings_pipeline.cpython-311.pyc
+.gitattributes
+.gitignore
+api.txt
+README.txt
+test_general_pipeline.txt

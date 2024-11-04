@@ -1,0 +1,16 @@
+artifact_uri: mlflow-artifacts:/0/57ffb6b31adc402dac7a261223c4f48b/artifacts
+deleted_time: 1730712934548
+end_time: 1730712067271
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: deleted
+run_id: 57ffb6b31adc402dac7a261223c4f48b
+run_name: enchanting-gnu-707
+run_uuid: 57ffb6b31adc402dac7a261223c4f48b
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1730712044187
+status: 3
+tags: []
+user_id: Administrateur

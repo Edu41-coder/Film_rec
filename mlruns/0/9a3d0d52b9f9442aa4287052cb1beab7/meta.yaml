@@ -1,0 +1,15 @@
+artifact_uri: mlflow-artifacts:/0/9a3d0d52b9f9442aa4287052cb1beab7/artifacts
+end_time: 1730713009692
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: 9a3d0d52b9f9442aa4287052cb1beab7
+run_name: persistent-roo-718
+run_uuid: 9a3d0d52b9f9442aa4287052cb1beab7
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1730712952031
+status: 3
+tags: []
+user_id: Administrateur

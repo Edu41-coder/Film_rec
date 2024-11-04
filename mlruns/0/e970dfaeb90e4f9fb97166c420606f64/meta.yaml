@@ -1,0 +1,16 @@
+artifact_uri: mlflow-artifacts:/0/e970dfaeb90e4f9fb97166c420606f64/artifacts
+deleted_time: 1730712934532
+end_time: 1730711389483
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: deleted
+run_id: e970dfaeb90e4f9fb97166c420606f64
+run_name: fearless-bear-542
+run_uuid: e970dfaeb90e4f9fb97166c420606f64
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1730711363332
+status: 3
+tags: []
+user_id: Administrateur

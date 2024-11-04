@@ -1,0 +1,43 @@
+pip install dvc
+pip install --user dvc
+
+dvc init
+
+ajouter le fichier
+dvc add Datasets\movies_ratings_merged.csv
+
+Après avoir ajouté le fichier, vérifiez les modifications apportées par DVC :
+git status
+
+Lister les fichiers DVC dans le répertoire courant :
+dvc list .
+
+Lister les fichiers dans le dépôt local
+dvc status
+
+Afficher les métriques :
+dvc metrics show
+
+Comparer les versions des fichiers DVC :
+dvc diff
+
+Afficher les fichiers suivis par DVC :
+dvc list . --dvc-only
+
+Pour afficher les différences dans les paramètres entre les commits:
+dvc params diff
+
+Créer un fichier DVC pour le pipeline:
+Ce fichier spécifie les étapes de votre pipeline, y compris l'entraînement du modèle
+
+stages:
+  train:
+    cmd: python Models/train_model.py
+    deps:
+      - Datasets/movies_ratings_merged.csv
+      - Models/train_model.py
+    outs:
+      - models/model.pkl
+
+Exécuter le pipeline DVC :
+dvc repro

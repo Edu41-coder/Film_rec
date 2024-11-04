@@ -1,0 +1,15 @@
+pour bien executer
+ # Sélectionner les fichiers
+pipeline.select_files()
+
+il faut
+from ipywidgets import widgets
+aussi
+from IPython.display import display
+
+
+pip install dask[complete]
+
+!pip install jupyter-dash
+
+!pip install dash-bootstrap-components

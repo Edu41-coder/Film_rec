@@ -1,0 +1,30 @@
+pip install mlflow
+
+1.Importation de accuracy_score : J'ai ajouté l'importation de accuracy_score depuis
+ sklearn.metrics pour calculer la précision.
+2. Calcul des prédictions : J'ai ajouté une section pour calculer les prédictions du modèle. 
+Vous devez définir y_true en fonction de votre contexte 
+(c'est-à-dire la colonne qui contient les vraies étiquettes).
+3.Calcul de la précision : J'ai ajouté le calcul de la précision à l'aide de accuracy_score.
+4.Enregistrement de la métrique : J'ai ajouté mlflow.log_metric("accuracy", accuracy) 
+pour enregistrer la précision dans MLflow.
+
+
+Pour tester:
+
+Démarrer le serveur MLflow :
+mlflow ui
+
+Exécuter l'script
+Dans une nouvelle fenêtre PowerShell exécuter votre script Python:
+python Models/train_model.py
+
+Accéder à l'interface MLflow :
+Ouvrez un navigateur web et allez à l'adresse suivante :
+http://127.0.0.1:5000
+
+mettre au debut su script python apres les importations
+mlflow.set_tracking_uri('http://localhost:5000')
+
+
+

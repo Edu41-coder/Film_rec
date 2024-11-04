@@ -1,0 +1,16 @@
+artifact_uri: mlflow-artifacts:/0/b4ffb420c9874dd3ba6b25da0c28ca62/artifacts
+deleted_time: 1730712934521
+end_time: 1730709149845
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: deleted
+run_id: b4ffb420c9874dd3ba6b25da0c28ca62
+run_name: enchanting-midge-534
+run_uuid: b4ffb420c9874dd3ba6b25da0c28ca62
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1730709149738
+status: 3
+tags: []
+user_id: Administrateur

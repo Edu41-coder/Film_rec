@@ -1,0 +1,16 @@
+artifact_uri: mlflow-artifacts:/0/d26e1ab9a6a74b808cf09c4fc4415cb5/artifacts
+deleted_time: 1730712934559
+end_time: 1730712203181
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: deleted
+run_id: d26e1ab9a6a74b808cf09c4fc4415cb5
+run_name: fearless-toad-70
+run_uuid: d26e1ab9a6a74b808cf09c4fc4415cb5
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1730712174749
+status: 3
+tags: []
+user_id: Administrateur

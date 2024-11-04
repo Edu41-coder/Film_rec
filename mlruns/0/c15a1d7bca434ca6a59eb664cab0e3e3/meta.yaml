@@ -1,0 +1,16 @@
+artifact_uri: mlflow-artifacts:/0/c15a1d7bca434ca6a59eb664cab0e3e3/artifacts
+deleted_time: 1730712934559
+end_time: 1730712899287
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: deleted
+run_id: c15a1d7bca434ca6a59eb664cab0e3e3
+run_name: debonair-foal-619
+run_uuid: c15a1d7bca434ca6a59eb664cab0e3e3
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1730712624792
+status: 3
+tags: []
+user_id: Administrateur

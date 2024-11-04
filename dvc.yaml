@@ -1,0 +1,8 @@
+stages:
+  train:
+    cmd: python Models/train_model.py
+    deps:
+      - Datasets/movies_ratings_merged.csv
+      - Models/train_model.py
+    outs:
+      - models/model.pkl

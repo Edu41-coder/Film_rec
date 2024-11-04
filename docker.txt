@@ -1,0 +1,123 @@
+Créer un fichier Dockerfile : À la racine de votre projet, créez un fichier nommé Dockerfile,sans extension
+
+Créer un fichier requirements.txt
+Ce fichier doit contenir toutes les dépendances nécessaires à votre projet
+
+Créer une API avec Flask
+
+Installer Flask : s'assurer que Flask est inclus dans votre requirements.txt.
+Créer un fichier app.py : À la racine du projet
+Créer un fichier nommé app.py qui contiendra l'API
+Écrire le contenu de l'API
+
+pour installer Docker sur Windows, vous devez télécharger Docker Desktop
+
+Construire l'image Docker : Une fois que Docker est installé et reconnu,
+vous pouvez exécuter la commande suivante pour construire votre image Docker
+docker build -t my_model_service .
+
+
+Exécuter le conteneur Docker : Une fois l'image construite, exécutez le conteneur avec la commande suivante
+docker run -p 5000:5000 my_model_service
+
+Tester l'API : Vous pouvez utiliser un outil comme curl ou Postman pour tester votre API. 
+
+Par exemple, vous pouvez exécuter la commande suivante dans le terminal 
+curl -X POST http://localhost:5000/train
+
+ou
+
+Invoke-WebRequest -Uri http://localhost:5000/train -Method POST
+
+avec Postman
+
+Créer une nouvelle requête
+Cliquez sur le bouton "New" ou sur le "+" pour ouvrir un nouvel onglet de requête.
+Sélectionner le type de requête :
+Dans le nouvel onglet, sélectionnez "POST" dans le menu déroulant à gauche de la barre d'URL.
+Configurer l'URL:
+Dans la barre d'URL, entrez l'URL de votre API. Par exemple, si vous testez l'endpoint d'entraînement, entrez:
+http://localhost:5000/train
+
+Ajouter des Données (si nécessaire)
+Si votre API nécessite des données dans le corps de la requête (par exemple, des paramètres d'entraînement),
+cliquez sur l'onglet "Body" en dessous de la barre d'URL.
+Sélectionnez "raw" et choisissez "JSON" dans le menu déroulant à droite.
+Entrez les données JSON que vous souhaitez envoyer. Par exemple :
+   {
+       "param1": "value1",
+       "param2": "value2"
+   }
+Pour accepter des parametres il faudrait modifier app.py,par exemple:
+   @app.post("/train")
+   async def train(request: TrainRequest):
+       try:
+           # Utiliser les paramètres pour configurer l'entraînement
+           n_neighbors = int(request.param1)  # Supposons que param1 soit le nombre de voisins
+           # Exécuter le processus d'entraînement avec les paramètres
+           subprocess.run(['dvc', 'repro', '--', f'--n_neighbors={n_neighbors}'], check=True)
+           return {"message": "Entraînement et évaluation terminés avec succès."}
+       except subprocess.CalledProcessError as e:
+           return {"error": str(e)}
+Envoyer la Requête
+liquez sur le bouton "Send" pour envoyer la requête à votre API.
+Vérifier la Réponse
+Après avoir cliqué sur "Send", vous verrez la réponse de votre API dans la section inférieure de Postman.
+Vérifiez le code de statut HTTP (par exemple, 200 pour un succès) et le corps de la réponse pour voir les résultats de votre requête.
+
+Étape 8 : Analyser les Résultats
+Si votre API a bien fonctionné, vous devriez voir un message de succès ou les résultats attendus.
+Si vous obtenez une erreur, vérifiez le message d'erreur pour comprendre ce qui a mal tourné.
+
+si on veut le faire avec fastAPI
+
+modifier fichier app.py
+
+   from fastapi import FastAPI
+   from pydantic import BaseModel
+   import subprocess
+
+   app = FastAPI()
+
+   class TrainRequest(BaseModel):
+       # Ajoutez ici les paramètres que vous souhaitez passer à l'API
+       param1: str
+       param2: str
+
+   @app.post("/train")
+   async def train(request: TrainRequest):
+       try:
+           # Exécuter le processus d'entraînement
+           subprocess.run(['dvc', 'repro'], check=True)
+           return {"message": "Entraînement et évaluation terminés avec succès."}
+       except subprocess.CalledProcessError as e:
+           return {"error": str(e)}
+
+   if __name__ == "__main__":
+       import uvicorn
+       uvicorn.run(app, host="0.0.0.0", port=5000)
+
+Exécuter l'Application FastAPI
+python app.py
+
+Cela démarrera le serveur FastAPI sur http://localhost:5000
+
+Avantages de l'Utilisation de FastAPI
+Validation Automatique : FastAPI utilise Pydantic pour la validation des données,
+ ce qui vous permet de définir facilement les schémas de données et de valider les entrées.
+Documentation Automatique : FastAPI génère automatiquement une documentation interactive 
+de votre API (accessible à http://localhost:5000/docs), ce qui facilite le test et
+ l'exploration de votre API.
+Performance : FastAPI est conçu pour être rapide et performant, ce qui en fait un excellent choix
+pour les applications d'API.
+
+Fonctionnalité de l'Endpoint
+Lorsque vous envoyez une requête POST à /train, l'API exécute la commande dvc repro pour démarrer le processus d'entraînement et d'évaluation.
+Si le processus réussit, l'API renvoie un message de succès.
+Si une erreur se produit lors de l'exécution de la commande, l'API renvoie un message d'erreur.
+
+Ajouter d'Autres Endpoints
+Voici un exemple d'ajout d'un autre endpoint :
+@app.get("/status")
+async def get_status():
+    return {"status": "Le modèle est en cours d'entraînement ou a été entraîné avec succès."}

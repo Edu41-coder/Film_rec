@@ -1,0 +1,16 @@
+artifact_uri: mlflow-artifacts:/0/d36899f2909e44d883244b6791654001/artifacts
+deleted_time: 1730712934567
+end_time: 1730712588688
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: deleted
+run_id: d36899f2909e44d883244b6791654001
+run_name: fun-gull-639
+run_uuid: d36899f2909e44d883244b6791654001
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1730712295741
+status: 3
+tags: []
+user_id: Administrateur
