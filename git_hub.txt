@@ -1,0 +1,24 @@
+
+Vérifier l'État de Votre Répertoire 
+git status
+
+Ajouter les Modifications :
+Ajoutez les fichiers que vous avez modifiés ou ajoutés à l'index de Git. 
+Vous pouvez ajouter tous les fichiers modifiés avec la commande suivante :
+git add .
+Si vous souhaitez ajouter des fichiers spécifiques, remplacez . par le nom du fichier.
+
+Commiter les Modifications
+Créez un commit avec un message décrivant les modifications que vous avez apportées
+git commit -m "Votre message de commit ici"
+
+Pousser les Modifications vers GitHub :
+git push origin development
+git push origin main
+
+Resumé:
+cd chemin/vers/votre/projet
+git status
+git add .
+git commit -m "Mise à jour du projet avec de nouvelles fonctionnalités"
+git push origin main
