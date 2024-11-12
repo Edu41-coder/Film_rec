@@ -21,4 +21,4 @@ cd chemin/vers/votre/projet
 git status
 git add .
 git commit -m "Mise à jour du projet avec de nouvelles fonctionnalités"
-git push origin main
+git push origin development

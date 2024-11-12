@@ -6,6 +6,7 @@ import time
 from itertools import combinations
 from ipywidgets import widgets
 from IPython.display import display, HTML, clear_output
+import dask.dataframe as dd  
 
 
 class GeneralMergePipeline:
@@ -255,14 +256,13 @@ class GeneralMergePipeline:
             self.data_dict[name] = df
 
         print("\n✅ Nettoyage global terminé")
-        
-        
+
     def merge_data(self):
         """Fusionner les données de manière séquentielle."""
         if not self.data_dict:
             print("❌ Veuillez d'abord charger les données.")
             return
-
+    
         def display_dataframe_info(name, df):
             """Afficher les informations d'un DataFrame."""
             print(f"{name}:")
@@ -270,7 +270,7 @@ class GeneralMergePipeline:
             print(f"- Types des colonnes:")
             for col in df.columns:
                 print(f"  • {col}: {df[col].dtype}")
-
+    
         def create_merge_widgets(common_cols):
             """Créer les widgets pour la fusion."""
             return {
@@ -297,7 +297,7 @@ class GeneralMergePipeline:
                     layout={'width': '150px'}
                 )
             }
-
+    
         def analyze_merge_relationship(df1, df2, common_cols):
             """Analyser la relation entre deux DataFrames."""
             results = {}
@@ -312,11 +312,11 @@ class GeneralMergePipeline:
                     'right_unique': right_unique,
                     'left_total': left_total,
                     'right_total': right_total,
-                    'left_ratio': left_total/left_unique if left_unique > 0 else 0,
-                    'right_ratio': right_total/right_unique if right_unique > 0 else 0
+                    'left_ratio': left_total / left_unique if left_unique > 0 else 0,
+                    'right_ratio': right_total / right_unique if right_unique > 0 else 0
                 }
             return results
-
+    
         def _display_merge_analysis(name, relations):
             """Afficher l'analyse des relations entre tables."""
             print("\n📊 Analyse des relations:")
@@ -332,120 +332,44 @@ class GeneralMergePipeline:
                 
                 if stats['right_ratio'] > 1:
                     print(f"\n📈 En moyenne {stats['right_ratio']:.1f} lignes par valeur unique")
-
-        def optimize_dataframe(df):
-            """Optimiser l'utilisation de la mémoire d'un DataFrame."""
-            for col in df.columns:
-                if df[col].dtype == 'int64':
-                    df[col] = df[col].astype('int32')
-                elif df[col].dtype == 'float64':
-                    df[col] = df[col].astype('float32')
-            return df
-
-        def merge_with_chunks(df1, df2, common_cols, merge_type='inner', chunk_size=1_000_000):
-            """Fusion par chunks pour les grands DataFrames."""
-            print(f"📦 Fusion par chunks (taille: {chunk_size:,})...")
-            
-            # Optimiser les types de données
-            df1 = optimize_dataframe(df1)
-            df2 = optimize_dataframe(df2)
-            
-            # Diviser le plus grand DataFrame en chunks
-            if len(df1) > len(df2):
-                chunks = [df1[i:i + chunk_size] for i in range(0, len(df1), chunk_size)]
-                static_df = df2
-            else:
-                chunks = [df2[i:i + chunk_size] for i in range(0, len(df2), chunk_size)]
-                static_df = df1
-                # Inverser le type de fusion si nécessaire
-                if merge_type == 'left':
-                    merge_type = 'right'
-                elif merge_type == 'right':
-                    merge_type = 'left'
-
-            result_dfs = []
-            total_chunks = len(chunks)
-            
-            for i, chunk in enumerate(chunks, 1):
-                print(f"  ↳ Chunk {i}/{total_chunks}...", end='\r')
-                if len(df1) > len(df2):
-                    temp = pd.merge(chunk, static_df, on=common_cols, how=merge_type)
-                else:
-                    temp = pd.merge(static_df, chunk, on=common_cols, how=merge_type)
-                result_dfs.append(temp)
-                
-            print("\n✅ Fusion des chunks terminée")
-            return pd.concat(result_dfs, ignore_index=True)
-
+    
         def process_next_merge():
             """Traiter la prochaine fusion."""
             if self.current_merge_index >= len(self.remaining_names):
                 self.finalize_merge()
                 return
-
+    
             name = self.remaining_names[self.current_merge_index]
             common_cols = set(self.merged.columns) & set(self.data_dict[name].columns)
             
             print(f"\n🔄 Fusion avec {name}")
             print(f"Colonnes communes: {list(common_cols)}")
-
+            
             if not common_cols:
                 raise Exception(f"❌ Aucune colonne commune avec {name}")
-
+    
             relations = analyze_merge_relationship(
                 self.merged, self.data_dict[name], common_cols
             )
             
             _display_merge_analysis(name, relations)
-
-            merge_options = [
-                (f"Inner - {self.merge_descriptions['inner']}", "inner"),
-                (f"Left - {self.merge_descriptions['left']}", "left"),
-            ]
-
-            dropdown = widgets.Dropdown(
-                options=merge_options,
-                value='inner',
-                description="Type:",
-                style={'description_width': 'initial'},
-                layout={'width': '500px'}
-            )
-
-            button = widgets.Button(
-                description="Appliquer la fusion",
-                button_style='success',
-                layout={'width': '200px'}
-            )
-
+            merge_widgets = create_merge_widgets(common_cols)
             output = widgets.Output()
-
+    
             def on_merge_clicked(b):
-                button.disabled = True
                 with output:
                     output.clear_output()
-                    merge_type = dropdown.value
-                    print(f"🔄 Application de la fusion {merge_type}...")
-
-                    # Calculer la taille potentielle du résultat
-                    potential_size = len(self.merged) * len(self.data_dict[name])
-                    
+                    merge_type = merge_widgets['type_select'].value
+                    selected_cols = list(merge_widgets['cols_select'].value)
+                    print(f"🔄 Application de la fusion {merge_type} sur les colonnes: {selected_cols}...")
+    
+                    # Créer les Dask DataFrames
+                    ddf1 = dd.from_pandas(self.merged, npartitions=10)
+                    ddf2 = dd.from_pandas(self.data_dict[name], npartitions=10)
+    
+                    # Effectuer la fusion
                     try:
-                        if potential_size > 1e9:  # Si très grande fusion
-                            temp_merged = merge_with_chunks(
-                                self.merged,
-                                self.data_dict[name],
-                                list(common_cols),
-                                merge_type
-                            )
-                        else:
-                            # Fusion directe pour les petites tables
-                            temp_merged = pd.merge(
-                                self.merged,
-                                self.data_dict[name],
-                                on=list(common_cols),
-                                how=merge_type
-                            )
-
+                        temp_merged = ddf1.merge(ddf2, on=selected_cols, how=merge_type).compute()
                         print("\n📊 Résultats:")
                         print(f"- Lignes initiales: {len(self.merged):,}")
                         print(f"- Lignes dans {name}: {len(self.data_dict[name]):,}")
@@ -461,17 +385,17 @@ class GeneralMergePipeline:
                         
                         print("\n✅ Fusion terminée!")
                         process_next_merge()
-                        
-                    except Exception as e:
-                        print(f"\n❌ Erreur lors de la fusion: {str(e)}")
-                        button.disabled = False
-
-            button.on_click(on_merge_clicked)
-
+    
+                    except MemoryError as e:
+                        print(f"❌ Erreur de mémoire lors de la fusion: {str(e)}")
+                        # Vous pouvez essayer de réduire le nombre de partitions ou d'autres stratégies ici
+    
+            merge_widgets['validate'].on_click(on_merge_clicked)
             display(HTML("<h4>🔄 Choisissez le type de fusion :</h4>"))
-            display(widgets.HBox([dropdown, button]))
+            display(widgets.HBox([merge_widgets['type_select'], merge_widgets['validate']]))
+            display(merge_widgets['cols_select'])
             display(output)
-
+    
         # Démarrer la première fusion
         try:
             print(f"\n🔄 Fusion de : {' + '.join(self.selected_names)}")
@@ -486,20 +410,6 @@ class GeneralMergePipeline:
             
         except Exception as e:
             print(f"❌ Erreur: {str(e)}")
-            
-    def finalize_merge(self):
-        """Finaliser la fusion des données et sauvegarder le résultat."""
-        if self.merged is None or self.merged.empty:
-            print("❌ Pas de données fusionnées à sauvegarder.")
-            return
-    
-        output_name = "_".join(self.selected_names) + "_merged.csv"
-        output_path = os.path.join(self.datasets_dir, output_name)
-        
-        # Sauvegarder le DataFrame fusionné dans un fichier CSV
-        self.merged.to_csv(output_path, index=False)
-        print(f"✅ Fusion terminée: {len(self.merged):,} lignes")
-        print(f"💾 Sauvegardé: {output_name}")            
 
     def describe_data(self):
         """Décrire les données fusionnées."""
